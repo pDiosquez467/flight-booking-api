@@ -1,0 +1,71 @@
+@startuml
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+}
+
+class Flight {
+  -id: Long
+  -origin: String
+  -destination: String
+  -capacity: int
+  -occupiedSeats: int
+  -departureTime: LocalDateTime
+  --
+  +reserveSeat(currentTime: LocalDateTime): void
+  +releaseSeat(): void
+  +availableSeats(): int
+  -hasDeparted(currentTime: LocalDateTime): boolean
+}
+
+class Booking {
+  -id: Long
+  -passenger: Passenger
+  -flight: Flight
+  -status: BookingStatus
+  -createdAt: LocalDateTime
+  --
+  +cancel(currentTime: LocalDateTime): void
+}
+
+class Passenger {
+  -id: Long
+  -name: String
+  -email: String
+}
+
+class BookingService {
+  -bookingRepository: BookingRepository
+  -flightRepository: FlightRepository
+  -passengerRepository: PassengerRepository
+  --
+  +createBooking(flightId: Long, passengerId: Long): Booking
+  +cancelBooking(bookingId: Long): void
+  +getAllBookings(): List<Booking
+}
+
+interface BookingRepository {
+  +save(booking: Booking): Booking
+  +findById(id: Long): Optional<Booking>
+  +findAll(): List<Booking>
+}
+
+interface FlightRepository {
+  +findById(id: Long): Optional<Flight>
+  +save(flight: Flight): Flight
+}
+
+interface PassengerRepository {
+  +findById(id: Long): Optional<Passenger>
+  +save(passenger: Passenger): Passenger
+}
+
+Booking --> Passenger
+Booking --> Flight
+
+BookingService --> BookingRepository
+BookingService --> FlightRepository
+BookingService --> PassengerRepository
+
+@enduml
