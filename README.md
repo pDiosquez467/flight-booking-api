@@ -1,8 +1,8 @@
 # ✈️ Flight Booking API
 
-[cite_start]Backend project built with **Java** and **Spring Boot** that simulates a flight booking system[cite: 1, 18].
+Backend project built with **Java** and **Spring Boot** that simulates a flight booking system.
 
-[cite_start]This project focuses on **domain modeling and object-oriented design**, rather than just exposing endpoints[cite: 1, 9]. [cite_start]The goal is to design a system where business rules live inside the domain model and invariants are protected[cite: 11, 12].
+This project focuses on **domain modeling and object-oriented design**, rather than just exposing endpoints. The goal is to design a system where business rules live inside the domain model and invariants are protected.
 
 ---
 
@@ -10,10 +10,10 @@
 
 Instead of starting from controllers or database structure, this project begins with:
 
-- [cite_start]**Defining domain entities** (`Flight`, `Booking`, `Passenger`) [cite: 1]
-- [cite_start]**Modeling business rules explicitly** [cite: 1, 2]
-- [cite_start]**Protecting invariants inside the domain** [cite: 6, 12]
-- [cite_start]**Keeping services thin** and focused on orchestration [cite: 6]
+- **Defining domain entities** (`Flight`, `Booking`, `Passenger`)
+- **Modeling business rules explicitly**
+- **Protecting invariants inside the domain**
+- **Keeping services thin** and focused on orchestration
 
 The intention is to build the system incrementally and evolve it through different versions.
 
@@ -22,11 +22,11 @@ The intention is to build the system incrementally and evolve it through differe
 ## 🗺️ Roadmap & Architecture Evolution
 
 ### Version 1: Core Domain & OOP Purity (Current)
-[cite_start]**Focus:** Establishing a Rich Domain Model and enforcing business rules strictly within entities to avoid "Anemic Models"[cite: 1, 11].
-* [cite_start]**Rich Domain Model:** Business logic (capacity checks, cancellation windows) is encapsulated within `Flight` and `Booking` entities, not scattered in services[cite: 1, 9, 15].
+**Focus:** Establishing a Rich Domain Model and enforcing business rules strictly within entities to avoid "Anemic Models".
+* **Rich Domain Model:** Business logic (capacity checks, cancellation windows) is encapsulated within `Flight` and `Booking` entities, not scattered in services.
 * **Concurrency Control:** Implementation of **Optimistic Locking** (`@Version`) to prevent race conditions (overselling) without performance-heavy database locks.
-* [cite_start]**Persistence Strategy:** **H2 Database** (In-Memory) for rapid prototyping, using full **Spring Data JPA** repositories to ensure easy migration to SQL later[cite: 18].
-* [cite_start]**Error Handling:** Use of **Domain Exceptions** (Fail-Fast principle) rather than boolean returns for business rule violations[cite: 8].
+* **Persistence Strategy:** **H2 Database** (In-Memory) for rapid prototyping, using full **Spring Data JPA** repositories to ensure easy migration to SQL later.
+* **Error Handling:** Use of **Domain Exceptions** (Fail-Fast principle) rather than boolean returns for business rule violations.
 * **Basic Containerization:** Docker support for reproducible runtime environments.
 
 ### Version 2: Persistence & API Contract (Next Step)
@@ -52,8 +52,8 @@ The intention is to build the system incrementally and evolve it through differe
 
 - **Java 21**
 - **Spring Boot 3.x**
-- [cite_start]**Spring Data JPA** [cite: 18]
-- [cite_start]**H2 Database** [cite: 18]
+- **Spring Data JPA**
+- **H2 Database**
 - **Hibernate**
 - **Maven**
 
@@ -70,7 +70,7 @@ The intention is to build the system incrementally and evolve it through differe
 This repository represents a journey from "making it work" to **"engineering it right"**. It serves as a practical lab to apply advanced concepts in a controlled environment, focusing on:
 
 * **Beyond CRUD:** Moving away from simple data manipulation to solving actual business problems (concurrency, race conditions, and state management).
-* [cite_start]**Rich Domain Modeling:** Implementing logic where it belongs—inside the entities—to protect business invariants and avoid the "Anemic Domain Model" anti-pattern[cite: 11, 12].
+* **Rich Domain Modeling:** Implementing logic where it belongs—inside the entities—to protect business invariants and avoid the "Anemic Domain Model" anti-pattern.
 * **Evolutionary Architecture:** Starting with a clean Monolith and progressively refactoring towards a more complex, distributed system only when necessary.
 * **Engineering Trade-offs:** Documenting the *why* behind every technical decision (e.g., Optimistic Locking vs. Pessimistic Locking, Monolith vs. Microservices).
 
