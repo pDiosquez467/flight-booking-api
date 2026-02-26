@@ -4,6 +4,7 @@ import com.pdiosquez.flight_booking_api.domain.exception.DomainException;
 import com.pdiosquez.flight_booking_api.domain.exception.FlightNotFoundException;
 import com.pdiosquez.flight_booking_api.domain.exception.PassengerNotFoundException;
 import com.pdiosquez.flight_booking_api.domain.model.Booking;
+import com.pdiosquez.flight_booking_api.domain.model.BookingStatus;
 import com.pdiosquez.flight_booking_api.domain.model.Flight;
 import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.domain.repository.BookingRepository;
@@ -144,5 +145,53 @@ class BookingServiceTest {
         verify(passengerRepository).findById(passengerId);
         verify(flightRepository).findById(flightId);
         verifyNoInteractions(bookingRepository);
+    }
+
+    @Test
+    @DisplayName("Should cancel booking and release seat when booking exists")
+    void shouldCancelBookingAndReleaseSeat_whenBookingExists() {
+        // Given
+        Long bookingId = 23L;
+        LocalDateTime fixedNow = LocalDateTime.of(2026, 1, 1, 10, 0);
+
+        Passenger passenger = Passenger.fromPersistence(
+                467L,
+                "John Doe",
+                "john.doe@example.com"
+        );
+
+        Flight flight = Flight.fromPersistence(
+                101L,
+                "BUE",
+                "MAD",
+                100,
+                1,
+                fixedNow.plusDays(5)
+        );
+
+        Booking booking = Booking.fromPersistence(
+                bookingId,
+                passenger,
+                flight,
+                BookingStatus.CONFIRMED,
+                fixedNow
+        );
+
+        when(bookingRepository.findById(bookingId))
+                .thenReturn(Optional.of(booking));
+
+        // When
+        bookingService.cancelBooking(bookingId, fixedNow);
+
+        // Then
+        assertAll(
+                () -> assertEquals(BookingStatus.CANCELLED, booking.getStatus()),
+                () -> assertEquals(0, flight.getOccupiedSeats())
+        );
+
+        verify(bookingRepository).findById(bookingId);
+        verify(bookingRepository, never()).save(any());
+        verifyNoInteractions(passengerRepository);
+        verifyNoInteractions(flightRepository);
     }
 }
