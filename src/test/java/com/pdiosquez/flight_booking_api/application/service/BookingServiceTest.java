@@ -1,8 +1,6 @@
 package com.pdiosquez.flight_booking_api.application.service;
 
-import com.pdiosquez.flight_booking_api.domain.exception.DomainException;
-import com.pdiosquez.flight_booking_api.domain.exception.FlightNotFoundException;
-import com.pdiosquez.flight_booking_api.domain.exception.PassengerNotFoundException;
+import com.pdiosquez.flight_booking_api.domain.exception.*;
 import com.pdiosquez.flight_booking_api.domain.model.Booking;
 import com.pdiosquez.flight_booking_api.domain.model.BookingStatus;
 import com.pdiosquez.flight_booking_api.domain.model.Flight;
@@ -112,6 +110,28 @@ class BookingServiceTest {
     }
 
     @Test
+    @DisplayName("Should throw BookingNotFoundException when booking does not exist")
+    void shouldThrowBookingNotFoundException_whenBookingDoesNotExist() {
+        Long bookingId = 467L;
+        LocalDateTime fixedNow = LocalDateTime.of(2026, 1, 1, 10, 0);
+        String expectedMessage = "Booking with ID %d not found.".formatted(bookingId);
+
+        when(bookingRepository.findById(bookingId))
+                .thenReturn(Optional.empty());
+
+        BookingNotFoundException exception = assertThrows(
+                BookingNotFoundException.class,
+                () -> bookingService.cancelBooking(bookingId, fixedNow)
+        );
+
+        assertEquals(expectedMessage, exception.getMessage());
+
+        verify(bookingRepository).findById(bookingId);
+        verifyNoMoreInteractions(bookingRepository);
+        verifyNoInteractions(passengerRepository, flightRepository);
+    }
+
+    @Test
     @DisplayName("Should throw FlightNotFoundException when flight does not exist")
     void shouldThrowFlightNotFoundException_whenFlightDoesNotExist() {
         // Given
@@ -193,5 +213,107 @@ class BookingServiceTest {
         verify(bookingRepository, never()).save(any());
         verifyNoInteractions(passengerRepository);
         verifyNoInteractions(flightRepository);
+    }
+
+    @Test
+    @DisplayName("Should throw a BookingAlreadyCancelledException when booking is already cancelled")
+    void shouldThrowBookingAlreadyCancelledException_whenBookingIsAlreadyCancelled() {
+        // Arrange
+        Long bookingId = 23L;
+        LocalDateTime fixedNow = LocalDateTime.of(2026, 1, 1, 10, 0);
+        String expectedMessage = "Booking %d is already cancelled and cannot be cancelled again.".formatted(bookingId);
+
+        Passenger passenger = Passenger.fromPersistence(
+                467L,
+                "John Doe",
+                "john.doe@example.com"
+        );
+
+        Flight flight = Flight.fromPersistence(
+                101L,
+                "BUE",
+                "MAD",
+                100,
+                1,
+                fixedNow.plusDays(5)
+        );
+
+        Booking alreadyCancelledBooking = Booking.fromPersistence(
+                bookingId,
+                passenger,
+                flight,
+                BookingStatus.CANCELLED,
+                fixedNow
+        );
+
+        when(bookingRepository.findById(bookingId))
+                .thenReturn(Optional.of(alreadyCancelledBooking));
+
+        // Act & Assert
+        BookingAlreadyCancelledException exception = assertThrows(
+                BookingAlreadyCancelledException.class,
+                () -> bookingService.cancelBooking(bookingId, fixedNow)
+        );
+
+        assertAll("Verify exception and side effects",
+                () -> assertEquals(expectedMessage, exception.getMessage()),
+                () -> assertEquals(1, flight.getOccupiedSeats(), "Flight seats should remain unchanged after a failed cancellation")
+        );
+
+        // Verify
+        verify(bookingRepository).findById(bookingId);
+        verifyNoMoreInteractions(bookingRepository);
+        verifyNoInteractions(passengerRepository, flightRepository);
+    }
+
+    @Test
+    @DisplayName("Should throw a BookingCancellationWindowClosedException when flight took off")
+    void shouldThrowBookingCancellationWindowClosedException_whenFlightTookOff() {
+        // Arrange
+        Long bookingId = 23L;
+        LocalDateTime fixedNow = LocalDateTime.of(2026, 1, 1, 10, 0);
+        String expectedMessage = "Cannot cancel Booking %d because the flight has already departed.".formatted(bookingId);
+
+        Passenger passenger = Passenger.fromPersistence(
+                467L,
+                "John Doe",
+                "john.doe@example.com"
+        );
+
+        Flight flight = Flight.fromPersistence(
+                101L,
+                "BUE",
+                "MAD",
+                100,
+                99,
+                fixedNow.minusDays(5)
+        );
+
+        Booking lateBooking = Booking.fromPersistence(
+                bookingId,
+                passenger,
+                flight,
+                BookingStatus.CONFIRMED,
+                fixedNow
+        );
+
+        when(bookingRepository.findById(bookingId))
+                .thenReturn(Optional.of(lateBooking));
+
+        // Act & Assert
+        BookingCancellationWindowClosedException exception = assertThrows(
+                BookingCancellationWindowClosedException.class,
+                () -> bookingService.cancelBooking(bookingId, fixedNow)
+        );
+
+        assertAll("Verify exception and side effects",
+                () -> assertEquals(expectedMessage, exception.getMessage()),
+                () -> assertEquals(99, flight.getOccupiedSeats(), "Flight seats should remain unchanged after a failed cancellation")
+        );
+
+        // Verify
+        verify(bookingRepository).findById(bookingId);
+        verifyNoMoreInteractions(bookingRepository);
+        verifyNoInteractions(passengerRepository, flightRepository);
     }
 }
