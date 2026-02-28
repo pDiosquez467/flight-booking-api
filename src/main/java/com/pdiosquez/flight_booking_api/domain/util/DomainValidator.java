@@ -12,5 +12,7 @@ public interface DomainValidator {
 
     void isGreaterThan(Number value, Number threshold, String message);
 
+    void isGreaterOrEqualThan(Number value, Number threshold, String message);
+
     void notEmpty(Collection<?> collection, String message);
 }

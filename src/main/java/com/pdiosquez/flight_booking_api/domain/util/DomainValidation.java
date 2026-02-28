@@ -24,6 +24,10 @@ public class DomainValidation {
         validator.isGreaterThan(value, threshold, message);
     }
 
+    public static void isGreaterOrEqualThan(Number value, Number threshold, String message) {
+        validator.isGreaterOrEqualThan(value, threshold, message);
+    }
+
     public static void notEmpty(Collection<?> collection, String message) {
         validator.notEmpty(collection, message);
     }
