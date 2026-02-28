@@ -1,5 +1,6 @@
 package com.pdiosquez.flight_booking_api.domain.model;
 
+import com.pdiosquez.flight_booking_api.domain.exception.EmptyFlightSeatReleaseException;
 import com.pdiosquez.flight_booking_api.domain.exception.FlightAlreadyDepartedException;
 import com.pdiosquez.flight_booking_api.domain.exception.FlightOverbookedException;
 import org.junit.jupiter.api.DisplayName;
@@ -255,4 +256,133 @@ class FlightTest {
                 () -> assertEquals(100, flight.getOccupiedSeats(), "Occupied seats should not increment if reservation fails")
         );
     }
+
+    @Test
+    @DisplayName("Given valid inputs, when releaseSeat() is called, then a seat is released correctly")
+    void givenValidInputs_whenReleaseSeat_thenSeatIsReleasedCorrectly() {
+        Long id                     = 101L;
+        String origin               = "BUE";
+        String destination          = "MAD";
+        int capacity                = 100;
+        int occupiedSeats           = 1;
+        LocalDateTime departureTime = LocalDateTime.of(2026, 1, 1, 1, 10, 0);
+
+        Flight flight = Flight.fromPersistence(
+                id,
+                origin,
+                destination,
+                capacity,
+                occupiedSeats,
+                departureTime
+        );
+
+        flight.releaseSeat(departureTime.minusDays(5));
+
+        assertAll(
+                "Verify successful seat release and state consistency",
+                () -> assertEquals(0, flight.getOccupiedSeats(), "Occupied seats should decrement by 1"),
+                () -> assertEquals(100, flight.availableSeats(), "Available seats should be 100 after releasing the seat"),
+                () -> assertEquals(id, flight.getId(), "Flight ID should remain unchanged")
+        );
+    }
+
+    @Test
+    @DisplayName("Given a null current time, when releaseSeat() is called, then it should throw an IllegalArgumentException")
+    void givenNullCurrentTime_whenReleaseSeat_thenThrowsException() {
+        Long id                     = 101L;
+        String origin               = "BUE";
+        String destination          = "MAD";
+        int capacity                = 100;
+        int occupiedSeats           = 99;
+        LocalDateTime departureTime = LocalDateTime.of(2026, 1, 1, 1, 10, 0);
+        String expectedMessage      = "Current time is required";
+
+        Flight flight = Flight.fromPersistence(
+                id,
+                origin,
+                destination,
+                capacity,
+                occupiedSeats,
+                departureTime
+        );
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> flight.releaseSeat(null)
+        );
+
+        assertAll(
+                "Verify exception and side effects",
+                () -> assertTrue(exception.getMessage().contains(expectedMessage), "Exception message should contain the invariant rule"),
+                () -> assertEquals(99, flight.getOccupiedSeats(), "Occupied seats should not decrement if release fails"),
+                () -> assertEquals(1, flight.availableSeats(), "Available seats should remain unchanged")
+        );
+    }
+
+    @Test
+    @DisplayName("Given an already departed flight, when releaseSeat() is called, then it should throw a FlightAlreadyDepartedException")
+    void givenFlightAlreadyDeparted_whenReleaseSeat_thenThrowsException() {
+        Long id                     = 101L;
+        String origin               = "BUE";
+        String destination          = "MAD";
+        int capacity                = 100;
+        int occupiedSeats           = 99;
+        LocalDateTime departureTime = LocalDateTime.of(2026, 1, 1, 1, 10, 0);
+        String expectedMessage      = "Flight %d has already departed. Operations are not allowed.".formatted(id);
+
+        Flight flight = Flight.fromPersistence(
+                id,
+                origin,
+                destination,
+                capacity,
+                occupiedSeats,
+                departureTime
+        );
+
+        FlightAlreadyDepartedException exception = assertThrows(
+                FlightAlreadyDepartedException.class,
+                () -> flight.releaseSeat(departureTime.plusDays(5))
+        );
+
+        assertAll(
+                "Verify exception and side effects",
+                () -> assertTrue(exception.getMessage().contains(expectedMessage), "Exception message should contain the invariant rule"),
+                () -> assertEquals(99, flight.getOccupiedSeats(), "Occupied seats should not decrement if release fails"),
+                () -> assertEquals(1, flight.availableSeats(), "Available seats should remain unchanged")
+        );
+    }
+
+    @Test
+    @DisplayName("Given an empty flight, when releaseSeat() is called, then it should throw an EmptyFlightSeatReleaseException")
+    void givenEmptyFlight_whenReleaseSeat_thenThrowsException() {
+        Long id                     = 101L;
+        String origin               = "BUE";
+        String destination          = "MAD";
+        int capacity                = 100;
+        int occupiedSeats           = 0;
+        LocalDateTime departureTime = LocalDateTime.of(2026, 1, 1, 1, 10, 0);
+        String expectedMessage      = "Cannot release seat for Flight %d because it has no occupied seats.".formatted(id);
+
+        Flight flight = Flight.fromPersistence(
+                id,
+                origin,
+                destination,
+                capacity,
+                occupiedSeats,
+                departureTime
+        );
+
+        EmptyFlightSeatReleaseException exception = assertThrows(
+                EmptyFlightSeatReleaseException.class,
+                () -> flight.releaseSeat(departureTime.minusDays(5))
+        );
+
+        assertAll(
+                "Verify exception and side effects",
+                () -> assertTrue(exception.getMessage().contains(expectedMessage), "Exception message should contain the invariant rule"),
+                () -> assertEquals(0, flight.getOccupiedSeats(), "Occupied seats should not decrement if release fails"),
+                () -> assertEquals(100, flight.availableSeats(), "Available seats should remain unchanged")
+        );
+    }
+
 }
