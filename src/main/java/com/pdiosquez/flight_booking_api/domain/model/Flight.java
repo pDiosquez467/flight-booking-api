@@ -21,7 +21,7 @@ public class Flight {
         DomainValidation.notBlank(destination, "Destination cannot be blank");
         DomainValidation.isPositive(capacity, "Capacity must be positive");
         DomainValidation.notNull(departureTime, "Departure time cannot be null");
-        DomainValidation.isGreaterThan(capacity, occupiedSeats, "Occupied seats cannot exceed capacity");
+        DomainValidation.isGreaterOrEqualThan(capacity, occupiedSeats, "Occupied seats cannot exceed capacity");
         this.id = id;
         this.origin = origin;
         this.destination = destination;

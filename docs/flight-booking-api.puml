@@ -42,7 +42,7 @@ class BookingService {
   --
   +createBooking(flightId: Long, passengerId: Long): Booking
   +cancelBooking(bookingId: Long): void
-  +getAllBookings(): List<Booking
+  +getAllBookings(): List<Booking>
 }
 
 interface BookingRepository {

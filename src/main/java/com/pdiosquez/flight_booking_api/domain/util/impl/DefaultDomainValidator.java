@@ -43,6 +43,13 @@ public class DefaultDomainValidator implements DomainValidator {
     }
 
     @Override
+    public void isGreaterOrEqualThan(Number value, Number threshold, String message) {
+        if (value == null || threshold == null || value.doubleValue() < threshold.doubleValue()) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    @Override
     public void notEmpty(Collection<?> collection, String message) {
         if (collection == null || collection.isEmpty()) {
             throw new IllegalArgumentException(message);
