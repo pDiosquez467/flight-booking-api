@@ -35,4 +35,15 @@ public class FlightEntity {
 
     @Column(name = "departure_time", nullable = false)
     private LocalDateTime departureTime;
+
+    public static FlightEntity of(String origin, String destination, int capacity, int occupiedSeats, LocalDateTime departureTime) {
+        FlightEntity entity  = new FlightEntity();
+        entity.origin        = origin;
+        entity.destination   = destination;
+        entity.capacity      = capacity;
+        entity.occupiedSeats = occupiedSeats;
+        entity.departureTime = departureTime;
+        return entity;
+    }
+
 }
