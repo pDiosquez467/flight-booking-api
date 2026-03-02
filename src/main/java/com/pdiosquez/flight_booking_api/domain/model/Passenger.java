@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class Passenger {
 
+    private static final String EMAIL_REGEX = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
+
     private final Long id;
     private final String name;
     private final String email;
@@ -12,6 +14,7 @@ public class Passenger {
     private Passenger(Long id, String name, String email) {
         DomainValidation.notBlank(name, "Passenger name cannot be empty or blank.");
         DomainValidation.notBlank(email, "Passenger email cannot be empty or blank.");
+        DomainValidation.matches(email, EMAIL_REGEX, "Invalid email format.");
         this.id = id;
         this.name = name;
         this.email = email;
