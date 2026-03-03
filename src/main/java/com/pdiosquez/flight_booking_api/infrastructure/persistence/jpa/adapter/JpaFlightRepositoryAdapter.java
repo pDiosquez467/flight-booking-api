@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-@Qualifier("flightAdapter")
+@Repository("flightAdapter")
+@Primary
 public class JpaFlightRepositoryAdapter implements FlightRepository {
 
     private final SpringDataFlightRepository springDataRepository;

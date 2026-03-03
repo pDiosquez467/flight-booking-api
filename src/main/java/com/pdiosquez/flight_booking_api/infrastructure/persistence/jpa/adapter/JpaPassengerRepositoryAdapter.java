@@ -5,11 +5,13 @@ import com.pdiosquez.flight_booking_api.domain.repository.PassengerRepository;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.PassengerEntity;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.PassengerMapper;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.repository.SpringDataPassengerRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository("passengerAdapter")
+@Primary
 public class JpaPassengerRepositoryAdapter implements PassengerRepository {
 
     private final SpringDataPassengerRepository springDataRepository;
