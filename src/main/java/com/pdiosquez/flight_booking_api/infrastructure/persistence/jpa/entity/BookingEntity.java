@@ -32,4 +32,17 @@ public class BookingEntity {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    public static BookingEntity of(
+            PassengerEntity passengerEntity,
+            FlightEntity flightEntity,
+            BookingStatus status,
+            LocalDateTime createdAt) {
+        BookingEntity entity = new BookingEntity();
+        entity.passengerEntity = passengerEntity;
+        entity.flightEntity    = flightEntity;
+        entity.status          = status;
+        entity.createdAt       = createdAt;
+        return entity;
+    }
 }
