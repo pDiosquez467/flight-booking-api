@@ -5,12 +5,14 @@ import com.pdiosquez.flight_booking_api.domain.repository.BookingRepository;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.BookingEntity;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.BookingMapper;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.repository.SpringDataBookingRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Primary
 public class JpaBookingRepositoryAdapter implements BookingRepository {
 
     private final SpringDataBookingRepository springDataRepository;
@@ -27,8 +29,6 @@ public class JpaBookingRepositoryAdapter implements BookingRepository {
                 springDataRepository.save(bookingMapper.toEntity(booking));
         return bookingMapper.toDomain(bookingEntity);
     }
-
-
 
     @Override
     public Optional<Booking> findById(Long bookingId) {
