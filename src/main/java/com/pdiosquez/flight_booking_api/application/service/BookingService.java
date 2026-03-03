@@ -10,6 +10,7 @@ import com.pdiosquez.flight_booking_api.domain.repository.BookingRepository;
 import com.pdiosquez.flight_booking_api.domain.repository.FlightRepository;
 import com.pdiosquez.flight_booking_api.domain.repository.PassengerRepository;
 import com.pdiosquez.flight_booking_api.domain.util.DomainValidation;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -22,7 +23,9 @@ public class BookingService {
     private final PassengerRepository passengerRepository;
     private final FlightRepository flightRepository;
 
-    public BookingService(BookingRepository bookingRepository, PassengerRepository passengerRepository, FlightRepository flightRepository) {
+    public BookingService(BookingRepository bookingRepository,
+                          @Qualifier("passengerAdapter") PassengerRepository passengerRepository,
+                          @Qualifier("flightAdapter") FlightRepository flightRepository) {
         this.bookingRepository = bookingRepository;
         this.flightRepository = flightRepository;
         this.passengerRepository = passengerRepository;
