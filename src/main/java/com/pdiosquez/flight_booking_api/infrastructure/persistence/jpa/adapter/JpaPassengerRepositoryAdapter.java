@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+@Repository("passengerAdapter")
 public class JpaPassengerRepositoryAdapter implements PassengerRepository {
 
     private final SpringDataPassengerRepository springDataRepository;

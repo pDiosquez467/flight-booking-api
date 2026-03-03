@@ -5,11 +5,14 @@ import com.pdiosquez.flight_booking_api.domain.repository.FlightRepository;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.FlightEntity;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.FlightMapper;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.repository.SpringDataFlightRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
+@Qualifier("flightAdapter")
 public class JpaFlightRepositoryAdapter implements FlightRepository {
 
     private final SpringDataFlightRepository springDataRepository;
