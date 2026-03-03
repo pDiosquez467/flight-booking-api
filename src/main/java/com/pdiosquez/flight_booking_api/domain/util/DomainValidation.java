@@ -31,5 +31,9 @@ public class DomainValidation {
     public static void notEmpty(Collection<?> collection, String message) {
         validator.notEmpty(collection, message);
     }
+
+    public static void matches(String value, String regex, String message) {
+        validator.matches(value, regex, message);
+    }
 }
 
