@@ -1,7 +1,6 @@
 package com.pdiosquez.flight_booking_api.infrastructure.rest.controller;
 
 import com.pdiosquez.flight_booking_api.application.service.FlightService;
-import com.pdiosquez.flight_booking_api.domain.exception.FlightNotFoundException;
 import com.pdiosquez.flight_booking_api.domain.model.Flight;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.FlightRequest;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.response.FlightResponse;
@@ -45,12 +44,5 @@ public class FlightController {
         FlightResponse response = flightMapper.toResponse(found);
 
         return ResponseEntity.ok(response);
-    }
-
-    @ExceptionHandler(FlightNotFoundException.class)
-    public ResponseEntity<String> handleFLightNotFound(FlightNotFoundException exception) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(exception.getMessage());
     }
 }

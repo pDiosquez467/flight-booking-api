@@ -1,7 +1,6 @@
 package com.pdiosquez.flight_booking_api.infrastructure.rest.controller;
 
 import com.pdiosquez.flight_booking_api.application.service.PassengerService;
-import com.pdiosquez.flight_booking_api.domain.exception.PassengerNotFoundException;
 import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.PassengerRequest;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.response.PassengerResponse;
@@ -46,12 +45,5 @@ public class PassengerController {
                 passengerMapper.toResponse(found);
 
         return ResponseEntity.ok(response);
-    }
-
-    @ExceptionHandler(PassengerNotFoundException.class)
-    public ResponseEntity<String> handlePassengerNotFound(PassengerNotFoundException exception) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(exception.getMessage());
     }
 }
