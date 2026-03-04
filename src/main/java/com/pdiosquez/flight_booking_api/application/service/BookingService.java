@@ -24,8 +24,8 @@ public class BookingService {
     private final FlightRepository flightRepository;
 
     public BookingService(BookingRepository bookingRepository,
-                          @Qualifier("passengerAdapter") PassengerRepository passengerRepository,
-                          @Qualifier("flightAdapter") FlightRepository flightRepository) {
+                         PassengerRepository passengerRepository,
+                         FlightRepository flightRepository) {
         this.bookingRepository = bookingRepository;
         this.flightRepository = flightRepository;
         this.passengerRepository = passengerRepository;
@@ -62,5 +62,10 @@ public class BookingService {
 
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
+    }
+
+    public Booking findById(Long bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException(bookingId));
     }
 }
