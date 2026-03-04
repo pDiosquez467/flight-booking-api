@@ -41,7 +41,7 @@ class FlightControllerTest {
 
     @BeforeEach
     void setUp() {
-        LocalDateTime now = LocalDateTime.now().plusDays(5);
+        LocalDateTime now = LocalDateTime.now();
         departureTime = now.plusDays(5);
 
         flight = Flight.fromPersistence(
