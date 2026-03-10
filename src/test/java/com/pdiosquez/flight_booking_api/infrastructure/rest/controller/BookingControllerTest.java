@@ -8,9 +8,9 @@ import com.pdiosquez.flight_booking_api.domain.model.Flight;
 import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.BookingRequest;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.error.GlobalExceptionHandler;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.BookingMapper;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.FlightMapper;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.PassengerMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.BookingRestMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.FlightRestMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.PassengerRestMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,9 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BookingController.class)
 @Import({
-        BookingMapper.class,
-        PassengerMapper.class,
-        FlightMapper.class,
+        BookingRestMapper.class,
+        PassengerRestMapper.class,
+        FlightRestMapper.class,
         GlobalExceptionHandler.class
 })
 class BookingControllerTest {

@@ -5,14 +5,14 @@ import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.Bo
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookingMapper {
+public class BookingEntityMapper {
 
-    private final PassengerMapper passengerMapper;
-    private final FlightMapper flightMapper;
+    private final PassengerEntityMapper passengerEntityMapper;
+    private final FlightEntityMapper flightEntityMapper;
 
-    public BookingMapper(PassengerMapper passengerMapper, FlightMapper flightMapper) {
-        this.passengerMapper = passengerMapper;
-        this.flightMapper    = flightMapper;
+    public BookingEntityMapper(PassengerEntityMapper passengerEntityMapper, FlightEntityMapper flightEntityMapper) {
+        this.passengerEntityMapper = passengerEntityMapper;
+        this.flightEntityMapper = flightEntityMapper;
     }
 
     public BookingEntity toEntity(Booking booking) {
@@ -20,8 +20,8 @@ public class BookingMapper {
 
         return new BookingEntity(
                 booking.getId(),
-                passengerMapper.toEntity(booking.getPassenger()),
-                flightMapper.toEntity(booking.getFlight()),
+                passengerEntityMapper.toEntity(booking.getPassenger()),
+                flightEntityMapper.toEntity(booking.getFlight()),
                 booking.getStatus(),
                 booking.getCreatedAt()
         );
@@ -32,8 +32,8 @@ public class BookingMapper {
 
         return Booking.fromPersistence(
                 bookingEntity.getId(),
-                passengerMapper.toDomain(bookingEntity.getPassengerEntity()),
-                flightMapper.toDomain(bookingEntity.getFlightEntity()),
+                passengerEntityMapper.toDomain(bookingEntity.getPassengerEntity()),
+                flightEntityMapper.toDomain(bookingEntity.getFlightEntity()),
                 bookingEntity.getStatus(),
                 bookingEntity.getCreatedAt()
         );

@@ -1,11 +1,10 @@
 package com.pdiosquez.flight_booking_api.infrastructure.rest.controller;
 
 import com.pdiosquez.flight_booking_api.application.service.BookingService;
-import com.pdiosquez.flight_booking_api.domain.exception.BookingNotFoundException;
 import com.pdiosquez.flight_booking_api.domain.model.Booking;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.BookingRequest;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.response.BookingResponse;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.BookingMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.BookingRestMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,11 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final BookingMapper bookingMapper;
+    private final BookingRestMapper bookingRestMapper;
 
-    public BookingController(BookingService bookingService, BookingMapper bookingMapper) {
+    public BookingController(BookingService bookingService, BookingRestMapper bookingRestMapper) {
         this.bookingService = bookingService;
-        this.bookingMapper = bookingMapper;
+        this.bookingRestMapper = bookingRestMapper;
     }
 
     @PostMapping
@@ -38,7 +37,7 @@ public class BookingController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(bookingMapper.toResponse(created));
+                .body(bookingRestMapper.toResponse(created));
     }
 
     @GetMapping("/{bookingId}")
@@ -47,7 +46,7 @@ public class BookingController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(bookingMapper.toResponse(found));
+                .body(bookingRestMapper.toResponse(found));
     }
 
     @GetMapping
@@ -55,7 +54,7 @@ public class BookingController {
         List<Booking> bookings = bookingService.getAllBookings();
 
         List<BookingResponse> response = bookings.stream()
-                            .map(bookingMapper::toResponse)
+                            .map(bookingRestMapper::toResponse)
                             .toList();
 
         return ResponseEntity.ok().body(response);

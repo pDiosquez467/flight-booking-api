@@ -7,9 +7,9 @@ import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.domain.repository.BookingRepository;
 import com.pdiosquez.flight_booking_api.domain.repository.FlightRepository;
 import com.pdiosquez.flight_booking_api.domain.repository.PassengerRepository;
-import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.BookingMapper;
-import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.FlightMapper;
-import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.PassengerMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.BookingEntityMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.FlightEntityMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.PassengerEntityMapper;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,11 +29,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest
 @Import({
         JpaBookingRepositoryAdapter.class,
-        BookingMapper.class,
+        BookingEntityMapper.class,
         JpaPassengerRepositoryAdapter.class,
-        PassengerMapper.class,
+        PassengerEntityMapper.class,
         JpaFlightRepositoryAdapter.class,
-        FlightMapper.class
+        FlightEntityMapper.class
 })
 class JpaBookingRepositoryAdapterTest {
 

@@ -5,7 +5,7 @@ import com.pdiosquez.flight_booking_api.application.service.PassengerService;
 import com.pdiosquez.flight_booking_api.domain.exception.PassengerNotFoundException;
 import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.PassengerRequest;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.PassengerMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.PassengerRestMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PassengerController.class)
-@Import({PassengerMapper.class})
+@Import({PassengerRestMapper.class})
 class PassengerControllerTest {
 
     private static final String BASE_PATH = "/api/v1/passengers";

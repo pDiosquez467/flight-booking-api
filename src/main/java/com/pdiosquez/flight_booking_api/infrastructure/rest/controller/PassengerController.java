@@ -4,7 +4,7 @@ import com.pdiosquez.flight_booking_api.application.service.PassengerService;
 import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.PassengerRequest;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.response.PassengerResponse;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.PassengerMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.PassengerRestMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class PassengerController {
 
     private final PassengerService passengerService;
-    private final PassengerMapper passengerMapper;
+    private final PassengerRestMapper passengerRestMapper;
 
-    public PassengerController(PassengerService passengerService, PassengerMapper passengerMapper) {
+    public PassengerController(PassengerService passengerService, PassengerRestMapper passengerRestMapper) {
         this.passengerService = passengerService;
-        this.passengerMapper  = passengerMapper;
+        this.passengerRestMapper = passengerRestMapper;
     }
 
     @PostMapping
@@ -29,7 +29,7 @@ public class PassengerController {
                 passengerService.create(request.name(), request.email());
 
         PassengerResponse response =
-                passengerMapper.toResponse(created);
+                passengerRestMapper.toResponse(created);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -42,7 +42,7 @@ public class PassengerController {
                 passengerService.findById(passengerId);
 
         PassengerResponse response =
-                passengerMapper.toResponse(found);
+                passengerRestMapper.toResponse(found);
 
         return ResponseEntity.ok(response);
     }

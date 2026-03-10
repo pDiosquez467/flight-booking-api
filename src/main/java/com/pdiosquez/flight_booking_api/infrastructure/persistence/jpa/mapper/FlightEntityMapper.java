@@ -5,7 +5,7 @@ import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.Fl
 import org.springframework.stereotype.Component;
 
 @Component
-public class FlightMapper {
+public class FlightEntityMapper {
 
     public FlightEntity toEntity(Flight flight) {
         if (flight == null) return null;

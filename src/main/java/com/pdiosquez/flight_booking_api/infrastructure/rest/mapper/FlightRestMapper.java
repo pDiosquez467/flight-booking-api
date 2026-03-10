@@ -5,7 +5,7 @@ import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.response.Flight
 import org.springframework.stereotype.Component;
 
 @Component
-public class FlightMapper {
+public class FlightRestMapper {
 
     public FlightResponse toResponse(Flight flight) {
         if (flight == null) {

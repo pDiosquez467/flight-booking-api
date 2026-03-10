@@ -4,7 +4,7 @@ import com.pdiosquez.flight_booking_api.application.service.FlightService;
 import com.pdiosquez.flight_booking_api.domain.model.Flight;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.FlightRequest;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.response.FlightResponse;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.FlightMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.FlightRestMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class FlightController {
 
     private final FlightService flightService;
-    private final FlightMapper flightMapper;
+    private final FlightRestMapper flightRestMapper;
 
-    public FlightController(FlightService flightService, FlightMapper flightMapper) {
+    public FlightController(FlightService flightService, FlightRestMapper flightRestMapper) {
         this.flightService = flightService;
-        this.flightMapper = flightMapper;
+        this.flightRestMapper = flightRestMapper;
     }
 
     @PostMapping
@@ -31,7 +31,7 @@ public class FlightController {
                 request.departureTime()
         );
 
-        FlightResponse response = flightMapper.toResponse(saved);
+        FlightResponse response = flightRestMapper.toResponse(saved);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -41,7 +41,7 @@ public class FlightController {
     @GetMapping("/{flightId}")
     public ResponseEntity<FlightResponse> findById(@PathVariable Long flightId) {
         Flight found = flightService.findById(flightId);
-        FlightResponse response = flightMapper.toResponse(found);
+        FlightResponse response = flightRestMapper.toResponse(found);
 
         return ResponseEntity.ok(response);
     }

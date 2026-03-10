@@ -5,7 +5,7 @@ import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.Pa
 import org.springframework.stereotype.Component;
 
 @Component
-public class PassengerMapper {
+public class PassengerEntityMapper {
 
     public PassengerEntity toEntity(Passenger passenger) {
         if (passenger == null) return null;

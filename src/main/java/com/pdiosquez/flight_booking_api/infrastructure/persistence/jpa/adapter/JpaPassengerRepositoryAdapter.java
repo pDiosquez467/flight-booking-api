@@ -3,7 +3,7 @@ package com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.adapter;
 import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.domain.repository.PassengerRepository;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.PassengerEntity;
-import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.PassengerMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.PassengerEntityMapper;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.repository.SpringDataPassengerRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -15,9 +15,9 @@ import java.util.Optional;
 public class JpaPassengerRepositoryAdapter implements PassengerRepository {
 
     private final SpringDataPassengerRepository springDataRepository;
-    private final PassengerMapper mapper;
+    private final PassengerEntityMapper mapper;
 
-    public JpaPassengerRepositoryAdapter(SpringDataPassengerRepository springDataRepository, PassengerMapper mapper) {
+    public JpaPassengerRepositoryAdapter(SpringDataPassengerRepository springDataRepository, PassengerEntityMapper mapper) {
         this.springDataRepository = springDataRepository;
         this.mapper = mapper;
     }

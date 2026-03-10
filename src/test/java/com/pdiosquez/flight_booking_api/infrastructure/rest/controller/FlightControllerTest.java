@@ -4,7 +4,7 @@ import com.pdiosquez.flight_booking_api.application.service.FlightService;
 import com.pdiosquez.flight_booking_api.domain.exception.FlightNotFoundException;
 import com.pdiosquez.flight_booking_api.domain.model.Flight;
 import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.request.FlightRequest;
-import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.FlightMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.rest.mapper.FlightRestMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FlightController.class)
-@Import(FlightMapper.class)
+@Import(FlightRestMapper.class)
 class FlightControllerTest {
 
     private static final String BASE_PATH = "/api/v1/flights";

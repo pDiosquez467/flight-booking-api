@@ -2,7 +2,7 @@ package com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.adapter;
 
 import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.PassengerEntity;
-import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.PassengerMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.PassengerEntityMapper;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
-@Import({JpaPassengerRepositoryAdapter.class, PassengerMapper.class})
+@Import({JpaPassengerRepositoryAdapter.class, PassengerEntityMapper.class})
 class JpaPassengerRepositoryAdapterTest {
 
     @Autowired

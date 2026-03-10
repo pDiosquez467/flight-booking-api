@@ -3,7 +3,7 @@ package com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.adapter;
 import com.pdiosquez.flight_booking_api.domain.model.Flight;
 import com.pdiosquez.flight_booking_api.domain.repository.FlightRepository;
 import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.entity.FlightEntity;
-import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.FlightMapper;
+import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.mapper.FlightEntityMapper;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
-@Import({JpaFlightRepositoryAdapter.class, FlightMapper.class})
+@Import({JpaFlightRepositoryAdapter.class, FlightEntityMapper.class})
 class JpaFlightRepositoryAdapterTest {
 
     @Autowired

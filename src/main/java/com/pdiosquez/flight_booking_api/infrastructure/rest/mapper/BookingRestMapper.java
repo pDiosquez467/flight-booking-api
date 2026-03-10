@@ -5,14 +5,14 @@ import com.pdiosquez.flight_booking_api.infrastructure.rest.dtos.response.Bookin
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookingMapper {
+public class BookingRestMapper {
 
-    private final PassengerMapper passengerMapper;
-    private final FlightMapper flightMapper;
+    private final PassengerRestMapper passengerRestMapper;
+    private final FlightRestMapper flightRestMapper;
 
-    public BookingMapper(PassengerMapper passengerMapper, FlightMapper flightMapper) {
-        this.passengerMapper = passengerMapper;
-        this.flightMapper = flightMapper;
+    public BookingRestMapper(PassengerRestMapper passengerRestMapper, FlightRestMapper flightRestMapper) {
+        this.passengerRestMapper = passengerRestMapper;
+        this.flightRestMapper = flightRestMapper;
     }
 
     public BookingResponse toResponse(Booking booking) {
@@ -23,8 +23,8 @@ public class BookingMapper {
         return new BookingResponse(
                 booking.getId(),
                 booking.getStatus(),
-                passengerMapper.toResponse(booking.getPassenger()),
-                flightMapper.toResponse(booking.getFlight())
+                passengerRestMapper.toResponse(booking.getPassenger()),
+                flightRestMapper.toResponse(booking.getFlight())
         );
     }
 }
