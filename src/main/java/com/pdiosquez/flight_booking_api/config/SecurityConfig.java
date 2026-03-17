@@ -22,22 +22,11 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/v1/flights", "/api/v1/flights/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/flights", "/api/v1/flights/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin123"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin);
     }
 
     @Bean
