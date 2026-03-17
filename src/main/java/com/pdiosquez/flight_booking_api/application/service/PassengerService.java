@@ -5,6 +5,8 @@ import com.pdiosquez.flight_booking_api.domain.model.Passenger;
 import com.pdiosquez.flight_booking_api.domain.repository.PassengerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PassengerService {
 
@@ -24,5 +26,9 @@ public class PassengerService {
         return passengerRepository
                 .findById(passengerId)
                 .orElseThrow(() -> new PassengerNotFoundException(passengerId));
+    }
+
+    public List<Passenger> findAll() {
+        return passengerRepository.findAll();
     }
 }

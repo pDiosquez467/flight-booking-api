@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/passengers")
 public class PassengerController {
@@ -44,6 +46,15 @@ public class PassengerController {
         PassengerResponse response =
                 passengerRestMapper.toResponse(found);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PassengerResponse>> findAll() {
+        List<Passenger> passengers = passengerService.findAll();
+        List<PassengerResponse> response = passengers.stream()
+                .map(passengerRestMapper::toResponse)
+                .toList();
         return ResponseEntity.ok(response);
     }
 }

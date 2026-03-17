@@ -6,6 +6,7 @@ import com.pdiosquez.flight_booking_api.domain.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class FlightService {
@@ -35,5 +36,10 @@ public class FlightService {
         return flightRepository
                 .findById(flightId)
                 .orElseThrow(() -> new FlightNotFoundException(flightId));
+    }
+
+    public List<Flight> findAll() {
+        return flightRepository
+                .findAll();
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/flights")
 public class FlightController {
@@ -43,6 +45,15 @@ public class FlightController {
         Flight found = flightService.findById(flightId);
         FlightResponse response = flightRestMapper.toResponse(found);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FlightResponse>> findAll() {
+        List<Flight> flights = flightService.findAll();
+        List<FlightResponse> response = flights.stream()
+                .map(flightRestMapper::toResponse)
+                .toList();
         return ResponseEntity.ok(response);
     }
 }

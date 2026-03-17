@@ -5,6 +5,7 @@ import com.pdiosquez.flight_booking_api.domain.repository.PassengerRepository;
 import com.pdiosquez.flight_booking_api.domain.util.DomainValidation;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,5 +38,10 @@ public class InMemoryPassengerRepository implements PassengerRepository {
     public Optional<Passenger> findById(Long passengerId) {
         DomainValidation.notNull(passengerId, "Passenger ID cannot be null when searching.");
         return Optional.ofNullable(database.get(passengerId));
+    }
+
+    @Override
+    public List<Passenger> findAll() {
+        return database.values().stream().toList();
     }
 }

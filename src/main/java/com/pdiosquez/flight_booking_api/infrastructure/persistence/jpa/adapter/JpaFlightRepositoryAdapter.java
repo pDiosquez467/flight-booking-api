@@ -8,6 +8,7 @@ import com.pdiosquez.flight_booking_api.infrastructure.persistence.jpa.repositor
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository("flightAdapter")
@@ -33,5 +34,13 @@ public class JpaFlightRepositoryAdapter implements FlightRepository {
     public Optional<Flight> findById(Long flightId) {
         return springDataRepository.findById(flightId)
                 .map(flightEntityMapper::toDomain);
+    }
+
+    @Override
+    public List<Flight> findAll() {
+        List<FlightEntity> flightEntities = springDataRepository.findAll();
+        return flightEntities.stream()
+                .map(flightEntityMapper::toDomain)
+                .toList();
     }
 }
